@@ -4,11 +4,11 @@
 // ========================================
 
 // Local MySQL settings (XAMPP/WAMP defaults)
-$host     = '127.0.0.1';
-$port     = '3306';
+$host     = 'tokaido.proxy.rlwy.net';
+$port     = '48077';
 $database = 'barangay_health';
 $user     = 'root';
-$password = '';   // XAMPP default = empty password
+$password = 'cTzVzSrvNjXQsKBLmeWYigoTMVTOTqvp';   // XAMPP default = empty password
 
 define('DB_HOST', $host);
 define('DB_PORT', $port);
