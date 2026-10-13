@@ -1,3 +1,8 @@
+<?php
+// ========================================
+// DATABASE CONFIGURATION
+// ========================================
+
 // Load .env file if it exists
 $envFile = __DIR__ . '/../.env';
 if (file_exists($envFile)) {
@@ -13,10 +18,6 @@ if (file_exists($envFile)) {
         }
     }
 }
-<?php
-// ========================================
-// DATABASE CONFIGURATION
-// ========================================
 
 $database = getenv('MYSQLDATABASE') ?: 'barangay_health';
 
