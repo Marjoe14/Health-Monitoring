@@ -1,0 +1,31 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Config with credentials (if any)
+config/database.local.php
+
+# Composer
+/vendor/
+composer.lock
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+error_log
+
+# Node (if you ever add it)
+node_modules/
+
+# Uploads / user data
+uploads/
+*.sql.backup
