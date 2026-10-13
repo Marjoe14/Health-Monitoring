@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Offline · Smart Community Health Monitoring</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root {
+            --primary: #4A90D9; --primary-dark: #3A7BC8; --primary-lighter: #EBF3FB;
+            --dark: #1A2A3A; --gray: #5A6C7D; --gray-light: #A0B4C5;
+            --light: #F5FAFF; --white: #FFFFFF;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        body {
+            font-family: var(--font);
+            background: linear-gradient(135deg, #E8F4FD 0%, #F0F9FF 40%, #D4EDDA 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .offline-container {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 48px 40px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(74, 144, 217, 0.15);
+            text-align: center;
+            border: 1px solid rgba(74, 144, 217, 0.08);
+        }
+        .offline-icon {
+            width: 96px; height: 96px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, #EBF3FB 0%, #D6E8F7 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary);
+            animation: pulse 2.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(74, 144, 217, 0.3); }
+            50% { transform: scale(1.04); box-shadow: 0 0 0 20px rgba(74, 144, 217, 0); }
+        }
+        h1 { font-size: 1.7rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; }
+        .subtitle { color: var(--gray); font-size: 1rem; margin-bottom: 28px; }
+        .status-box {
+            background: #FFF8E1;
+            border: 1px solid #FFE082;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            text-align: left;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .status-box i { color: #E65100; font-size: 1.2rem; margin-top: 2px; flex-shrink: 0; }
+        .status-box p { font-size: 0.9rem; color: #7A4A00; margin: 0; }
+        .status-box strong { display: block; color: #E65100; margin-bottom: 4px; }
+        .connection-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            background: #FDEDEC;
+            color: #C62828;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+        .connection-indicator.online { background: #E8F5E9; color: #2E7D32; }
+        .connection-indicator .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font);
+            text-decoration: none;
+            min-height: 48px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #4A90D9 0%, #3A7BC8 100%);
+            color: var(--white);
+            box-shadow: 0 4px 16px rgba(74, 144, 217, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(74, 144, 217, 0.4); }
+        .btn-primary:active { transform: scale(0.97); }
+        .btn-outline {
+            background: transparent;
+            color: var(--gray);
+            border-color: #E8EEF4;
+            margin-top: 12px;
+        }
+        .btn-outline:hover { background: var(--light); border-color: var(--gray-light); }
+        .info-note {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid #E8EEF4;
+            font-size: 0.8rem;
+            color: var(--gray-light);
+            line-height: 1.7;
+        }
+        .info-note i { color: var(--primary); margin-right: 4px; }
+        .offline-tips {
+            text-align: left;
+            background: var(--light);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+        .offline-tips h3 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .offline-tips h3 i { color: var(--primary); }
+        .offline-tips ul { list-style: none; padding: 0; }
+        .offline-tips li {
+            font-size: 0.82rem;
+            color: var(--gray);
+            padding: 5px 0 5px 20px;
+            position: relative;
+        }
+        .offline-tips li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        @media (max-width: 480px) {
+            .offline-container { padding: 32px 24px; border-radius: 16px; }
+            h1 { font-size: 1.4rem; }
+            .offline-icon { width: 76px; height: 76px; font-size: 2.4rem; }
+            .btn { padding: 12px 24px; font-size: 0.88rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="offline-container">
+        <div class="offline-icon"><i class="fas fa-wifi"></i></div>
+        <h1>You're Offline</h1>
+        <p class="subtitle">No internet connection detected.</p>
+
+        <div class="connection-indicator" id="connectionIndicator">
+            <span class="dot"></span>
+            <span id="connectionText">Checking connection...</span>
+        </div>
+
+        <div class="status-box">
+            <i class="fas fa-info-circle"></i>
+            <p>
+                <strong>Good news!</strong>
+                The system still works offline. Any data you enter will be saved locally and automatically synced when your internet comes back.
+            </p>
+        </div>
+
+        <div class="offline-tips">
+            <h3><i class="fas fa-lightbulb"></i> While you're offline:</h3>
+            <ul>
+                <li>Add residents, BMI, and other records</li>
+                <li>Data is saved securely on your device</li>
+                <li>Auto-sync happens when online</li>
+                <li>Don't close the browser if possible</li>
+            </ul>
+        </div>
+
+        <button class="btn btn-primary" id="retryBtn" onclick="retryConnection()">
+            <i class="fas fa-sync-alt"></i> Retry Connection
+        </button>
+        <br>
+        <button class="btn btn-outline" onclick="goToCachedApp()">
+            <i class="fas fa-arrow-right"></i> Continue to App
+        </button>
+
+        <div class="info-note">
+            <i class="fas fa-shield-alt"></i>
+            Your data is stored locally on this device and will be synced automatically.<br>
+            Barangay Garsika · Smart Community Health Monitoring System
+        </div>
+    </div>
+
+    <script>
+        const indicator = document.getElementById('connectionIndicator');
+        const text = document.getElementById('connectionText');
+
+        function updateConnectionStatus() {
+            if (navigator.onLine) {
+                indicator.classList.add('online');
+                text.textContent = 'Back Online!';
+                setTimeout(() => { if (navigator.onLine) goToCachedApp(); }, 1500);
+            } else {
+                indicator.classList.remove('online');
+                text.textContent = 'No Connection';
+            }
+        }
+
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        updateConnectionStatus();
+
+        function retryConnection() {
+            const btn = document.getElementById('retryBtn');
+            const originalHTML = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
+
+            fetch('/manifest.json?t=' + Date.now(), { cache: 'no-store' })
+                .then((res) => {
+                    if (res.ok) {
+                        text.textContent = 'Connected!';
+                        indicator.classList.add('online');
+                        setTimeout(goToCachedApp, 500);
+                    } else throw new Error('Not ok');
+                })
+                .catch(() => {
+                    text.textContent = 'Still offline';
+                    setTimeout(() => { btn.disabled = false; btn.innerHTML = originalHTML; }, 800);
+                });
+        }
+
+        function goToCachedApp() {
+            if (document.referrer && document.referrer.startsWith(location.origin)) {
+                history.back();
+            } else {
+                window.location.href = '/index.html';
+            }
+        }
+    </script>
+</body>
+</html>
