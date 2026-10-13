@@ -1,14 +1,24 @@
 <?php
 // ========================================
-// DATABASE CONFIGURATION - LOCALHOST
+// DATABASE CONFIGURATION
 // ========================================
 
-// Local MySQL settings (XAMPP/WAMP defaults)
-$host     = 'tokaido.proxy.rlwy.net';
-$port     = '48077';
-$database = 'barangay_health';
-$user     = 'root';
-$password = 'cTzVzSrvNjXQsKBLmeWYigoTMVTOTqvp';   // XAMPP default = empty password
+$database = getenv('MYSQLDATABASE') ?: 'barangay_health';
+
+$databaseUrl = getenv('DATABASE_URL');
+
+if ($databaseUrl) {
+    $parsed   = parse_url($databaseUrl);
+    $host     = $parsed['host'] ?? getenv('MYSQLHOST')     ?: 'localhost';
+    $port     = $parsed['port'] ?? getenv('MYSQLPORT')     ?: '3306';
+    $user     = $parsed['user'] ?? getenv('MYSQLUSER')     ?: 'root';
+    $password = $parsed['pass'] ?? getenv('MYSQLPASSWORD') ?: '';
+} else {
+    $host     = getenv('MYSQLHOST')     ?: 'localhost';
+    $port     = getenv('MYSQLPORT')     ?: '3306';
+    $user     = getenv('MYSQLUSER')     ?: 'root';
+    $password = getenv('MYSQLPASSWORD') ?: '';
+}
 
 define('DB_HOST', $host);
 define('DB_PORT', $port);
@@ -19,20 +29,14 @@ define('DB_PASS', $password);
 function getDBConnection() {
     try {
         $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
-        $pdo = new PDO(
-            $dsn,
-            DB_USER,
-            DB_PASS,
-            [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false
-            ]
-        );
+        $pdo = new PDO($dsn, DB_USER, DB_PASS, [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false
+        ]);
         return $pdo;
     } catch (PDOException $e) {
         error_log("Database connection failed: " . $e->getMessage());
         return null;
     }
 }
-?>
